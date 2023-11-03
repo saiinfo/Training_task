@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live Clock</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #000;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #clock {
+            font-size: 6em; /* Increased font size for a larger clock */
+            color: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        h1 {
+            font-size: 2em;
+            color: #fff;
+        }
+        a.button {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            display: inline-block;
+            margin-left: 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Time</h1>
+    <a class="button" href="http://127.0.0.1:8000">vedio</a>
+    <div id="clock"></div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const time = `${hours}:${minutes}:${seconds}`;
+            document.getElementById("clock").textContent = time;
+        }
+
+        // Update the clock every second
+        setInterval(updateClock, 1000);
+
+        updateClock();
+    </script>
+</body>
+</html>

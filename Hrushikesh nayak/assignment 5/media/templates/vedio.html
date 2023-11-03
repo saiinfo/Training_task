@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Media Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #000; /* Set a dark background color */
+            margin: 0;
+            overflow: hidden;
+        }
+
+        h1 {
+            color: #fff; /* Set text color to white */
+            display: inline-block;
+        }
+
+        a.button {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            display: inline-block;
+            margin-left: 20px;
+            border-radius: 5px;
+        }
+
+        video {
+            width: 80%; /* Adjust the width to make the video a bit smaller */
+            max-width: 100%;
+            height: auto; /* Allow the height to adjust based on aspect ratio */
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>HTML5 Media Player</h1>
+    <a class="button" href="http://127.0.0.1:8000/clock">Clock</a>
+    <video width="640" height="480" controls> <!-- Adjust the width and height values for a slightly smaller video -->
+        <source src="/VAL Ep6 1 Lotus Map UA 30s 1920x1080 enSG.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</body>
+</html>
