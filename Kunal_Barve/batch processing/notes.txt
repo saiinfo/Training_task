@@ -1,0 +1,23 @@
+netstat is a command-line network utility tool 
+
+Active TCP connections (netstat -a)
+Active TCP connections with IP addresses and port numbers (netstat -an)
+Active UDP connections (netstat -u)
+Network statistics (netstat -s)
+Routing table (netstat -r)
+Listening ports (netstat -abn)
+
+
+
+@echo off: This command disables echoing of commands in the command prompt window. It ensures that only the output of the executed commands is displayed, without showing the commands themselves.
+
+
+cls: This command clears the screen, ensuring a clean output window before displaying the IP addresses and ports.
+
+echo Local IP addresses:: This line displays the text "Local IP addresses:" in the command prompt window.
+
+ipconfig | findstr /R "IPv4 Address": This command executes the ipconfig command, which displays information about the current IP configuration. The output of ipconfig is then piped (|) to the findstr command, which searches for lines containing the text "IPv4 Address". This effectively filters the output to display only the IPv4 addresses assigned to the local machine.
+
+echo Available ports:: This line displays the text "Available ports:" in the command prompt window.
+
+netstat -an | findstr /R /C:"^ TCP" /C:"^ UDP" /C:"LISTENING": This command executes the netstat command with the -an option, which displays a list of all active connections and listening ports. The output of netstat is then piped to findstr, which searches for lines containing either " TCP", " UDP", or "LISTENING". This filters the output to display only the lines representing TCP and UDP connections as well as the listening ports.
