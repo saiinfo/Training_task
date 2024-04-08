@@ -1,0 +1,7 @@
+AJAX stands for Asynchronous JavaScript and XML. It is a technique used in web development to send and receive data from a web server asynchronously without interfering with the current page state. In other words, AJAX allows you to update parts of a web page without needing to reload the entire page.
+
+
+
+XML (Extensible Markup Language) is a markup language that defines a set of rules for encoding documents in a format that is both human-readable and machine-readable
+
+XMLHttpRequest (XHR) is an JAvascrpit API provided by web browsers that allows client-side JavaScript code to make HTTP requests to servers. It enables asynchronous communication between a web browser and a server, allowing web applications to dynamically update content without requiring a full page reload.

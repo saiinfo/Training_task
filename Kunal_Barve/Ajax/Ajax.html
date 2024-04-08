@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movies Catalog</title>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx-populate/browser/xlsx-populate.min.js"></script>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        input[type="text"] {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<button type="button" onclick="loadXMLDoc()">Load Movies</button>
+<br><br>
+
+<input type="text" id="searchInput" placeholder="Search movies by title...">
+<button type="button" onclick="searchMovies()">Search</button>
+<button type="button" onclick="resetSearch()">Reset</button>
+<button type="button" onclick="saveTable('xlsx')">Save as XLSX</button>
+<button type="button" onclick="saveTable('txt')">Save as Text</button>
+
+<table id="moviesTable"></table>
+
+<script>
+function loadXMLDoc() {
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function() {
+        const xmlDoc = xhttp.responseXML;
+        console.log(xmlDoc); // Log xmlDoc to check if it's null or contains the XML document
+        if (xmlDoc) {
+            const movies = xmlDoc.getElementsByTagName("movie");
+            displayMovies(movies);
+        } else {
+            console.error("Failed to load XML document.");
+        }
+    };
+    xhttp.open("GET", "movies.xml", true);
+    xhttp.send();
+}
+
+
+
+function displayMovies(movies) {
+    let table = "<tr><th>Title</th><th>Release Date</th><th>Gross Profit</th></tr>";
+    for (let i = 0; i < movies.length; i++) {
+        const title = movies[i].getElementsByTagName("title")[0].childNodes[0].nodeValue;
+        const releaseDate = movies[i].getElementsByTagName("release_date")[0].childNodes[0].nodeValue;
+        const grossProfit = movies[i].getElementsByTagName("gross_profit")[0].childNodes[0].nodeValue;
+        table += "<tr><td>" + title + "</td><td>" + releaseDate + "</td><td>" + grossProfit + "</td></tr>";
+    }
+    document.getElementById("moviesTable").innerHTML = table;
+}
+
+function searchMovies() {
+    const input = document.getElementById("searchInput").value.toUpperCase();
+    const table = document.getElementById("moviesTable");
+    const rows = table.getElementsByTagName("tr");
+    for (let i = 0; i < rows.length; i++) {
+        const titleCell = rows[i].getElementsByTagName("td")[0];
+        if (titleCell) {
+            const title = titleCell.textContent || titleCell.innerText;
+            if (title.toUpperCase().indexOf(input) > -1) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none";
+            }
+        }
+    }
+}
+
+function resetSearch() {
+    document.getElementById("searchInput").value = "";
+    searchMovies();
+}
+
+function saveTable(format) {
+    const table = document.getElementById("moviesTable");
+    const rows = table.getElementsByTagName("tr");
+    let data = [];
+    for (let i = 0; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName("td");
+        const rowData = [];
+        for (let j = 0; j < cells.length; j++) {
+            rowData.push(cells[j].textContent || cells[j].innerText);
+        }
+        data.push(rowData);
+    }
+
+    if (format === "txt") {
+        // Convert data to text format and download
+        download("movies.txt", data.map(row => row.join(",")).join("\n"));
+    } else if (format === "xlsx") {
+        // Convert data to XLSX format and download
+        const workbook = XlsxPopulate.fromBlank();
+        workbook.sheet(0).cell("A1").value(data);
+        workbook.outputAsync().then(data => {
+            const blob = new Blob([data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "movies.xlsx";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
+    }
+}
+
+function download(filename, text) {
+    const element = document.createElement("a");
+    element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
+    element.setAttribute("download", filename);
+    element.style.display = "none";
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+}
+</script>
+
+</body>
+</html>

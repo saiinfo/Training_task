@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple API Example</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        input[type="text"] {
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+        #searchBtn, #saveBtn {
+            padding: 5px 10px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Users</h1>
+    <input type="text" id="searchInput" placeholder="Search...">
+    <button id="searchBtn">Search</button>
+    <button id="saveBtn">Save as Text</button>
+    <table id="userTable"></table>
+
+    <script>
+        function createTable(users) {
+            const table = document.getElementById('userTable');
+            table.innerHTML = '';
+
+            // Create table header
+            const headerRow = table.insertRow();
+            Object.keys(users[0]).forEach(key => {
+                const headerCell = document.createElement('th');
+                headerCell.textContent = key;
+                headerRow.appendChild(headerCell);
+            });
+
+            // Create table rows
+            users.forEach(user => {
+                const row = table.insertRow();
+                Object.values(user).forEach(value => {
+                    const cell = row.insertCell();
+                    cell.textContent = value;
+                });
+            });
+        }
+
+        function getUsers() {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', 'https://jsonplaceholder.typicode.com/users', true);
+            xhr.onload = function() {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    const users = JSON.parse(xhr.responseText);
+                    createTable(users);
+                } else {
+                    console.error('Request failed with status:', xhr.status);
+                }
+            };
+            xhr.send();
+        }
+
+        document.getElementById('searchBtn').addEventListener('click', function() {
+            const searchValue = document.getElementById('searchInput').value.toLowerCase();
+            const table = document.getElementById('userTable');
+            const rows = table.getElementsByTagName('tr');
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let found = false;
+                for (let j = 0; j < cells.length; j++) {
+                    const cellValue = cells[j].textContent.toLowerCase();
+                    if (cellValue.includes(searchValue)) {
+                        found = true;
+                        break;
+                    }
+                }
+                rows[i].style.display = found ? '' : 'none';
+            }
+        });
+
+        document.getElementById('saveBtn').addEventListener('click', function() {
+            const table = document.getElementById('userTable');
+            const rows = table.getElementsByTagName('tr');
+            let data = '';
+            for (let i = 0; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                for (let j = 0; j < cells.length; j++) {
+                    data += cells[j].textContent + '\t';
+                }
+                data += '\n';
+            }
+            const blob = new Blob([data], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'user_data.txt';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        });
+
+        getUsers();
+    </script>
+</body>
+</html>

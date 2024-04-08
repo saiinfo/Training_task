@@ -1,0 +1,20 @@
+
+The Shawshank Redemption,1994-09-23,$58,500,000
+The Godfather,1972-03-24,$245,066,411
+Forrest Gump,1994-07-06,$678,226,805
+The Dark Knight,2008-07-18,$1,005,457,016
+Pulp Fiction,1994-10-14,$213,928,762
+The Lord of the Rings: The Return of the King,2003-12-17,$1,142,219,401
+Star Wars: Episode V - The Empire Strikes Back,1980-06-20,$538,375,067
+The Matrix,1999-03-31,$463,517,383
+Goodfellas,1990-09-19,$46,836,214
+Interstellar,2014-11-07,$677,545,589
+The Silence of the Lambs,1991-02-14,$272,742,922
+Gladiator,2000-05-05,$457,640,427
+The Lion King,1994-06-24,$968,511,805
+The Dark Knight Rises,2012-07-20,$1,081,041,287
+Avatar,2009-12-18,$2,847,246,203
+Inception,2010-07-16,$829,895,144
+Shrek 2,2004-05-19,$928,760,770
+Jurassic Park,1993-06-11,$1,038,812,584
+Harry Potter and the Philosopher's Stone,2001-11-16,$974,755,371
