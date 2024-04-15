@@ -1,0 +1,35 @@
+<!-- expenditure_list.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expenditure List</title>
+</head>
+<body>
+    <h1>Expenditure List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for expenditure in expenditures %}
+            <tr>
+                <td>{{ expenditure.description }}</td>
+                <td>{{ expenditure.amount }}</td>
+                <td>
+                    <a href="{% url 'remove_expenditure' expenditure.id %}">Remove</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p>Total Expenditure: {{ total_expenditure }}</p>
+    <a href="{% url 'add_expenditure' %}">Add Expenditure</a>
+</body>
+</html>
