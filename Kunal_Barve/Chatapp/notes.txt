@@ -1,0 +1,54 @@
+install channnels , daphne
+
+1. Channels is a Django extension that enables handling asynchronous communication protocols such as WebSockets, HTTP2, and other long-lived connections in Django applications. 
+2. Daphne is an HTTP, HTTP2, and WebSocket protocol server for ASGI and ASGI-HTTP, which are the protocol standards used by Channels. Daphne serves as the interface between Django Channels and the outside world, handling incoming requests, managing WebSocket connections, and routing requests to the appropriate Django application instances.
+3.ASGI stands for Asynchronous Server Gateway Interface. It is a specification for building asynchronous Python web applications and servers.ASGI allows web applications and servers to handle multiple concurrent connections and perform asynchronous I/O operations efficiently. This is important for applications that require real-time updates, such as chat applications, live streaming platforms, and multiplayer games.
+
+4.# setting the asgi application so daphne server can identify it
+ASGI_APPLICATION = 'Chatapp.asgi.application'
+
+
+5. routing.py we create route for chatConsumer
+
+6. consumers.py will handle the events, like onmessage event, onopen event, etc, We will see these events in chatPage.html where we have created the socket connection
+
+WebSocket is a communication protocol that provides full-duplex communication channels over a single TCP connection
+
+7.class ChatConsumer(AsyncWebsocketConsumer): Here we are creating a class named ChatConsumer which inherits from AsyncWebsocketConsumer and is used to create, destroy and do a few more things with WebSockets. And here we are creating ChatSocket for the required purpose.
+async def connect(self): This function works on the websocket instance which has been created and when the connection is open or created, it connects and accepts the connection. It creates a group name for the chatroom and adds the group to the channel layer group. 
+async def disconnect(): This just removes the instance from the group. 
+async def receive(): This function is triggered when we send data from the WebSocket ( the event for this to work is: send ), this receives the text data which has been converted into the JSON format ( as it is suitable for the javascript ) after the text_data has been received, then it needs to be spread out to the other instances which are active in the group. we retrieve the message parameter which holds the message and the username parameter which was sent by the socket via HTML or js. This message which is received will be spread to other instances via the channel_layer.group_send() method which takes the first argument as the roomGroupName that to which group this instance belongs and where the data needs to be sent. then the second argument is the dictionary which defines the function which will handle the sending of the data ( “type”: “sendMessage” ) and also dictionary has the variable message which holds the message data.
+async def sendMessage(self, event): This function takes the instance which is sending the data and the event, basically event holds the data which was sent via the group_send() method of the receive() function. Then it sends the message and the username parameter to all the instances which are active in the group. And it is dumped in JSON format so that js can understand the notation. JSON is the format ( Javascript object notation)
+
+
+9.We usually work with wsgi.py which is in the standard Django without any asynchronous support. But here we are using asynchronous channels. So we have to define the routings in a different way than URLs. For HTTP we define that use the normal application which we were already using, now we have introduced another protocol, that is ws ( WebSocket ) for which you have to route. The ProtocolTypeRouter creates routes for different types of protocols used in the application. AuthMiddlewareStack authenticates the routes and instances for the Authentication and URLRouter routes the ws ( WebSocket connections ). The protocol for WebSockets is known as “ws”. For different requests we use HTTP.
+
+Here the router routes the WebSocket URL to a variable in the chat app that is “websocket_urlpatterns” and this variable holds the routes for the WebSocket connections. 
+
+
+10.
+ChatApp/settings.py
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
+
+This code defines the channel layer in which we will be working and sharing data. For the deployment and production level, don’t use InMemoryChannelLayer, because there are huge chances for your data leakage. This is not good for production. For production use the Redis channel.
+
+
+
+11. create 2 super suers 1. user=  testuser1 ,pass testuser1
+
+
+
+
+
+Since django-5, you need to do this through a POST request, since it has side-effects. The fact that it worked with a GET request was (likely) a violation of the HTTP protocol: it made it possible for certain scripts to log out users, without the user wanting to. So a POST request also protects against cross-site request forgery (CSRF) [wiki].
+
+So in the template, work with a mini-form:
+
+<form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">logout</button>
+</form>
