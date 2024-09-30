@@ -1,0 +1,9 @@
+brand,model,year,mileage,engine_size,price
+BrandA,Model1,2018,45,150,300000
+BrandB,Model2,2019,50,180,350000
+BrandC,Model3,2020,40,125,280000
+BrandD,Model4,2021,55,200,400000
+BrandE,Model5,2022,60,220,450000
+BrandF,Model6,2023,30,110,250000
+BrandG,Model7,2021,70,130,320000
+BrandH,Model8,2020,65,160,370000
