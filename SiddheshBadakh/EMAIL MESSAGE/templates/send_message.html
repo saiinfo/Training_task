@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Send Message</title>
+</head>
+<body>
+    <h2>Send a Message via Email</h2>
+    <form action="/send_message" method="POST">
+        <input type="email" name="email" placeholder="Recipient Email" required>
+        <input type="text" name="subject" placeholder="Subject" required>
+        <textarea name="message" placeholder="Enter your message here" required></textarea>
+        <button type="submit">Send Message</button>
+    </form>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>

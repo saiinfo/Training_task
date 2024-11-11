@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Request OTP</title>
+</head>
+<body>
+    <h2>Enter Your Email to Receive OTP</h2>
+    <form action="/request_otp" method="POST">
+        <input type="email" name="email" placeholder="Enter email" required>
+        <button type="submit">Send OTP</button>
+    </form>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>
